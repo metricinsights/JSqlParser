@@ -243,6 +243,7 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |   <K_GROUP_CONCAT:"GROUP_CONCAT">
 |   <K_GUARD:"GUARD">
 |   <K_HAVING:"HAVING">
+|   <K_QUALIFY:"QUALIFY">
 |   <K_HIGH_PRIORITY : "HIGH_PRIORITY">
 |   <K_HISTORY : "HISTORY">
 |   <K_HOPPING:"HOPPING">
@@ -1964,6 +1965,7 @@ PlainSelect PlainSelect() #PlainSelect:
     List<OrderByElement> orderByElements;
     GroupByElement groupBy = null;
     Expression having = null;
+    Expression qualify = null;
     Limit limit = null;
     Offset offset = null;
     Fetch fetch = null;
@@ -2031,6 +2033,7 @@ PlainSelect PlainSelect() #PlainSelect:
     [ oracleHierarchicalQueryClause=OracleHierarchicalQueryClause() { plainSelect.setOracleHierarchical(oracleHierarchicalQueryClause); } ]
     [ groupBy=GroupByColumnReferences() { plainSelect.setGroupByElement(groupBy); }]
     [ having=Having() { plainSelect.setHaving(having); }]
+    [ qualify=Qualify() {}]
     [LOOKAHEAD(<K_ORDER> <K_SIBLINGS> <K_BY>) orderByElements = OrderByElements() { plainSelect.setOracleSiblings(true); plainSelect.setOrderByElements(orderByElements);    }   ]
     [ <K_WINDOW>
         windowName = RelObjectName() <K_AS> winDef = windowDefinition() { List<WindowDefinition> winDefs = new ArrayList<WindowDefinition>(); winDefs.add(winDef.withWindowName(windowName)); }
@@ -2918,6 +2921,17 @@ Expression Having():
     <K_HAVING> having=Expression()
     {
         return having;
+    }
+}
+
+Expression Qualify():
+{
+    Expression qualify = null;
+}
+{
+    <K_QUALIFY> qualify=Expression()
+    {
+        return qualify;
     }
 }
 
