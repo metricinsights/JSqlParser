@@ -11,6 +11,17 @@
     <packaging>bundle</packaging>
     <url>https://github.com/JSQLParser/JSqlParser</url>
 
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <pmdVersion>6.46.0</pmdVersion>
+        <repo.host>repo.metricinsights.com</repo.host>
+        <repo.root>var/www/repo.metricinsights.com</repo.root>
+    </properties>
+
+    <description>JSqlParser parses an SQL statement and translate it into a hierarchy of Java classes.
+        The generated hierarchy can be navigated using the Visitor Pattern.</description>
+
     <licenses>
         <license>
             <name>GNU Library or Lesser General Public License (LGPL) V2.1</name>
@@ -93,12 +104,12 @@
 
     <distributionManagement>
         <repository>
-            <id>sonatype-nexus-staging</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+            <url>scpexe://${repo.host}/${repo.root}/mvn/staging/</url>
+            <id>mi-staging-repository-ssh</id>
         </repository>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>scpexe://${repo.host}/${repo.root}/mvn/snapshot/</url>
+            <id>mi-snapshot-repository-ssh</id>
         </snapshotRepository>
     </distributionManagement>
 
@@ -115,6 +126,13 @@
     </issueManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>3.5.3</version>
+            </extension>
+        </extensions>
         <plugins>
             <!-- Update they Keyword Whitelist in the Grammar's production RelObjectNameWithoutValue() -->
             <plugin>
@@ -628,11 +646,4 @@
         </profile>
     </profiles>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <pmdVersion>6.46.0</pmdVersion>
-    </properties>
-
-    <description>JSqlParser parses an SQL statement and translate it into a hierarchy of Java classes.
-        The generated hierarchy can be navigated using the Visitor Pattern.</description>
 </project>
