@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jsqlparser</groupId>
     <artifactId>jsqlparser</artifactId>
-    <version>4.6-mi</version>
+    <version>4.7-mi</version>
     <name>JSQLParser library</name> 
     <inceptionYear>2004</inceptionYear>
     <organization>
@@ -10,6 +10,17 @@
     </organization>
     <packaging>bundle</packaging>
     <url>https://github.com/JSQLParser/JSqlParser</url>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <pmdVersion>6.46.0</pmdVersion>
+        <repo.host>repo.metricinsights.com</repo.host>
+        <repo.root>var/www/repo.metricinsights.com</repo.root>
+    </properties>
+
+    <description>JSqlParser parses an SQL statement and translate it into a hierarchy of Java classes.
+        The generated hierarchy can be navigated using the Visitor Pattern.</description>
 
     <licenses>
         <license>
@@ -41,25 +52,25 @@
         <dependency>
         	<groupId>org.junit.jupiter</groupId>
         	<artifactId>junit-jupiter</artifactId>
-        	<version>5.9.0</version>
+        	<version>5.9.2</version>
         	<scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.8.0</version>
+            <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>4.8.0</version>
+            <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
+            <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -93,12 +104,12 @@
 
     <distributionManagement>
         <repository>
-            <id>sonatype-nexus-staging</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+            <url>scpexe://${repo.host}/${repo.root}/mvn/staging/</url>
+            <id>mi-staging-repository-ssh</id>
         </repository>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>scpexe://${repo.host}/${repo.root}/mvn/snapshot/</url>
+            <id>mi-snapshot-repository-ssh</id>
         </snapshotRepository>
     </distributionManagement>
 
@@ -115,6 +126,13 @@
     </issueManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>3.5.3</version>
+            </extension>
+        </extensions>
         <plugins>
             <!-- Update they Keyword Whitelist in the Grammar's production RelObjectNameWithoutValue() -->
             <plugin>
@@ -190,11 +208,12 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                     <showWarnings>true</showWarnings>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <showDeprecation>true</showDeprecation>
@@ -309,6 +328,7 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.12.1</version>
                 <executions>
@@ -545,7 +565,7 @@
                 <property>
                     <name>!skipCheckSources</name>
                 </property>
-                <jdk>[1.8,)</jdk>
+                <jdk>17</jdk>
             </activation>
             <build>
                 <plugins>
@@ -626,11 +646,4 @@
         </profile>
     </profiles>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <pmdVersion>6.46.0</pmdVersion>
-    </properties>
-
-    <description>JSqlParser parses an SQL statement and translate it into a hierarchy of Java classes.
-        The generated hierarchy can be navigated using the Visitor Pattern.</description>
 </project>
