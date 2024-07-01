@@ -91,6 +91,7 @@ public class ParserKeywordsUtils {
                 ,  { "GROUP", RESTRICTED_SQL2016 }
                 ,  { "GROUPING" , RESTRICTED_ALIAS }
                 ,  { "HAVING" , RESTRICTED_SQL2016 }
+                ,  { "QUALIFY" , RESTRICTED_SQL2016 }
                 ,  { "IF" , RESTRICTED_SQL2016 }
                 ,  { "IIF" , RESTRICTED_ALIAS }
                 ,  { "IGNORE" , RESTRICTED_ALIAS }
